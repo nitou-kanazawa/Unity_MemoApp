@@ -6,7 +6,7 @@ namespace Project.Domain.Memos.Model {
     /// <summary>
     /// タグを表すEntity．
     /// </summary>
-    public class Tag : EntityBase<Guid> {
+    public class Tag : EntityBase<TagId> {
 
         public string Name { get; }
 
@@ -17,7 +17,7 @@ namespace Project.Domain.Memos.Model {
         /// <summary>
         /// コンストラクタ．
         /// </summary>
-        public Tag(Guid id, string name) : base(id) {
+        public Tag(TagId id, string name) : base(id) {
 
             if (string.IsNullOrEmpty(name)) {
                 throw new InvalidOperationException();
@@ -38,17 +38,5 @@ namespace Project.Domain.Memos.Model {
         public override string ToString() {
             return Name;
         }
-
-
-        /// ----------------------------------------------------------------------------
-        #region Static
-
-        public static Tag CreateNew(string name) {
-            var id = Guid.NewGuid();    // [NOTE] Id生成ロジックはここに隠蔽
-
-            return new Tag(id, name);
-        }
-
-        #endregion
     }
 }

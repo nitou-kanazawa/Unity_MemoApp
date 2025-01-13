@@ -53,4 +53,11 @@
 
 https://zenn.dev/flutteruniv/books/flutter-architecture/viewer/5_layered-architecture
 
+// ID 発番
+https://zenn.dev/zamax/articles/bf33ba94d2b539
+
+https://zenn.dev/j5ik2o/articles/a085ab3e3d0f197f6559
+
+https://codezine.jp/article/detail/10038
+
 ---

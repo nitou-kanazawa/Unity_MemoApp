@@ -8,7 +8,7 @@ namespace Project.Domain.Memos.Model {
     /// </summary>
     public sealed class TagId : ValueObject<TagId>{
 
-        public string Value { get; }
+        public Guid Value { get; }
 
 
         /// ----------------------------------------------------------------------------
@@ -17,9 +17,11 @@ namespace Project.Domain.Memos.Model {
         /// <summary>
         /// コンストラクタ．
         /// </summary>
-        public TagId(string text) {
-            if (text == null) throw new InvalidOperationException();
-            Value = text;
+        public TagId(Guid value) {
+            if (value == Guid.Empty)
+                throw new ArgumentException("TagId cannot be empty.", nameof(value));
+
+            Value = value;
         }
 
         /// <summary>
@@ -33,7 +35,7 @@ namespace Project.Domain.Memos.Model {
         /// 文字列への変換．
         /// </summary>
         public override string ToString() {
-            return Value;
+            return Value.ToString();
         }
 
 
@@ -52,7 +54,7 @@ namespace Project.Domain.Memos.Model {
         #region Static
 
         public static TagId New() {
-            return new TagId(Guid.NewGuid().ToString());
+            return new TagId(Guid.NewGuid());
         }
 
         #endregion
