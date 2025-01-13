@@ -1,0 +1,17 @@
+{
+    "name": "Project.Infrastructure.BuiltIn",
+    "rootNamespace": "Project.Infrastructure.BuiltIn",
+    "references": [
+        "GUID:60d24026939295745a2a89e3b302646f",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
