@@ -4,9 +4,9 @@ using Project.Domain.Shared;
 namespace Project.Domain.Memos.Model {
 
     /// <summary>
-    /// タグを表すValueObject．
+    /// タグを表すEntity．
     /// </summary>
-    public class Tag : ValueObject<Tag> {
+    public class Tag : EntityBase<Guid> {
 
         public string Name { get; }
 
@@ -17,7 +17,8 @@ namespace Project.Domain.Memos.Model {
         /// <summary>
         /// コンストラクタ．
         /// </summary>
-        public Tag(string name) {
+        public Tag(Guid id, string name) : base(id) {
+
             if (string.IsNullOrEmpty(name)) {
                 throw new InvalidOperationException();
             }
@@ -40,14 +41,14 @@ namespace Project.Domain.Memos.Model {
 
 
         /// ----------------------------------------------------------------------------
-        // Protected Method
+        #region Static
 
-        /// <summary>
-        /// 値の比較ロジック．
-        /// </summary>
-        protected override bool EqualsCore(Tag other) {
-            return this.Name == other.Name;
+        public static Tag CreateNew(string name) {
+            var id = Guid.NewGuid();    // [NOTE] Id生成ロジックはここに隠蔽
+
+            return new Tag(id, name);
         }
-        
+
+        #endregion
     }
 }

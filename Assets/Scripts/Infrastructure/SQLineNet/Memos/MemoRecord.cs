@@ -24,19 +24,19 @@ namespace Project.Infrastructure.SQLiteNet {
                 Id = memo.Id,
                 Title = memo.Title,
                 Content = memo.Content.Text,
-                //CreatedAt = memo.CreatedAt,
-                //UpdatedAt = memo.UpdatedAt
+                CreatedAt = memo.CreatedAt,
+                UpdatedAt = memo.UpdatedAt
             };
         }
 
-        public static Memo ToDomain(this MemoRecord record) {
+        public static Memo ToDomain(this MemoRecord record) 
+            {
             return new Memo(
                 record.Id,
                 record.Title,
-                new Content(record.Content)
-            //record.CreatedAt,
-            //record.UpdatedAt
-            );
+                new Content(record.Content),
+                record.CreatedAt,
+                record.UpdatedAt);
         }
     }
 }

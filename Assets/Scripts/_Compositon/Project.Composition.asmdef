@@ -1,0 +1,23 @@
+{
+    "name": "Project.Composition",
+    "rootNamespace": "Project.Composition",
+    "references": [
+        "GUID:60d24026939295745a2a89e3b302646f",
+        "GUID:1937dfb5c490b084880fb2181fb5f1bc",
+        "GUID:fbf93de473673a741829faa07a9a5d8a",
+        "GUID:0dda1248cfef94f4e82a653e00457274",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:2359c074672083046b6ff6b309700f8e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

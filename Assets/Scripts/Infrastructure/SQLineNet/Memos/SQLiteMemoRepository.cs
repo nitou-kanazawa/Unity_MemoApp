@@ -15,7 +15,7 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
 
     public sealed class SQLiteMemoRepository : IMemoRepository{
 
-        private readonly SQLiteConnection _connection;
+        private readonly ISQLiteConnection _connection;
 
         private readonly static string FileName = "momos.db";
         private readonly static string FilePath = Path.Combine(UnityEngine.Application.persistentDataPath, FileName);
@@ -49,9 +49,10 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
         /// </summary>
         UniTask IMemoRepository.SaveAsync(Memo memo) {
             if (memo == null) throw new ArgumentNullException(nameof(memo));
+
             var record = memo.ToRecord();
 
-            // 
+            // Apply to database
             if (_connection.Find<MemoRecord>(record.Id) != null) {
                 _connection.Update(record);
             } else {
