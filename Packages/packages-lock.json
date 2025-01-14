@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.coffee.softmask-for-ugui": {
+      "version": "https://github.com/mob-sakai/SoftMaskForUGUI.git?path=Packages/src",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "hash": "3a9017547e51f382629a2c355d76ddbbf6b85d38"
+    },
     "com.cysharp.unitask": {
       "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
       "depth": 0,
@@ -13,6 +22,13 @@
       "source": "git",
       "dependencies": {},
       "hash": "ef09a36fdeac6dc7017f9b3f1f59a3b7d3b94708"
+    },
+    "com.harumak.upalette": {
+      "version": "https://github.com/Haruma-K/uPalette.git?path=/Assets/uPalette",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "cc1cedcc0d800de06296d0992d3e3af5e7cdae62"
     },
     "com.neuecc.unirx": {
       "version": "https://github.com/neuecc/UniRx.git?path=Assets/Plugins/UniRx/Scripts",
@@ -232,6 +248,13 @@
       "source": "git",
       "dependencies": {},
       "hash": "b021dfa5593dc9ffbb0a30dd43dfcc4f13f3d381"
+    },
+    "net.mikinya.unity-excel-importer": {
+      "version": "https://github.com/mikito/unity-excel-importer.git?path=Assets/ExcelImporter#v0.1.1/upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "c32fe64aeda4bfb7c8cbfdafa100d5d6b4fa9974"
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
