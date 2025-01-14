@@ -249,6 +249,15 @@
       "dependencies": {},
       "hash": "b021dfa5593dc9ffbb0a30dd43dfcc4f13f3d381"
     },
+    "me.qiankanglai.loopscrollrect": {
+      "version": "https://github.com/qiankanglai/LoopScrollRect.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "hash": "ed00b083a02b76091fd946d79b2b3ab6d3f2721f"
+    },
     "net.mikinya.unity-excel-importer": {
       "version": "https://github.com/mikito/unity-excel-importer.git?path=Assets/ExcelImporter#v0.1.1/upm",
       "depth": 0,
