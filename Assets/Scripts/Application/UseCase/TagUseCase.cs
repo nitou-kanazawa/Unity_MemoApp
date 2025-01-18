@@ -52,8 +52,8 @@ namespace Project.Application.UseCase {
         /// 新規タグを作成する．
         /// </summary>
         public async UniTask CreateTagAsync(string name) {
-            var tag = await _tagRepository.FindByNameAsync(name);
-            if (tag == null)
+            var existingTag = await _tagRepository.FindByNameAsync(name);
+            if (existingTag != null)
                 throw new InvalidOperationException("A tag with the same name already exists.");
 
             // 追加処理
