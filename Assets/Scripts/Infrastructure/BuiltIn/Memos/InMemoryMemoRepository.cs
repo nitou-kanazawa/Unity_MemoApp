@@ -34,7 +34,7 @@ namespace Project.Infrastructure.Default.Memos {
         // Public Method
 
         UniTask IMemoRepository.SaveAsync(Memo memo) {
-            _store[memo.Id] = memo;
+            _store[memo.Id.Value] = memo;
             return UniTask.CompletedTask;
         }
 

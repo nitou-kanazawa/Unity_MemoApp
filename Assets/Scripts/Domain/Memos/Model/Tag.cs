@@ -6,7 +6,7 @@ namespace Project.Domain.Memos.Model {
     /// <summary>
     /// タグを表すEntity．
     /// </summary>
-    public class Tag : EntityBase<TagId> {
+    public sealed class Tag : EntityBase<TagId> {
 
         public string Name { get; }
 
@@ -17,14 +17,21 @@ namespace Project.Domain.Memos.Model {
         /// <summary>
         /// コンストラクタ．
         /// </summary>
-        public Tag(TagId id, string name) : base(id) {
+        public Tag(TagId id, string name)
+            : base(id) {
 
             if (string.IsNullOrEmpty(name)) {
                 throw new InvalidOperationException();
             }
             Name = name;
         }
-        
+
+        /// <summary>
+        /// コンストラクタ．
+        /// </summary>
+        public Tag(string name) : this(new TagId(), name) { }
+
+
         /// <summary>
         /// ハッシュ値の取得．
         /// </summary>
@@ -37,6 +44,13 @@ namespace Project.Domain.Memos.Model {
         /// </summary>
         public override string ToString() {
             return Name;
+        }
+
+        /// <summary>
+        /// 複製．
+        /// </summary>
+        public Tag Clone() {
+            return new Tag(Id, Name);
         }
     }
 }

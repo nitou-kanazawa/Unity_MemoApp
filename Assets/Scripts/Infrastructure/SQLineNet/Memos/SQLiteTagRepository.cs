@@ -42,7 +42,7 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
         /// <summary>
         /// 指定したタグを保存する．
         /// </summary>
-        UniTask ITagRepository.SaveAsync(Tag tag) {
+        UniTask ITagRepository.AddAsync(Tag tag) {
             var record = new TagRecord {
                 Id = tag.Id.Value,
                 Name = tag.Name
@@ -84,7 +84,7 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
         /// <summary>
         /// 指定したIDのメモを削除する．
         /// </summary>
-        UniTask ITagRepository.DeleteAsync(TagId id) {
+        UniTask ITagRepository.RemoveAsync(TagId id) {
             _connection.Delete<TagRecord>(id);
 
             return UniTask.CompletedTask;

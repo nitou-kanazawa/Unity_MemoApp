@@ -21,7 +21,7 @@ namespace Project.Infrastructure.SQLiteNet {
 
         public static MemoRecord ToRecord(this Memo memo) {
             return new MemoRecord {
-                Id = memo.Id,
+                Id = memo.Id.Value,
                 Title = memo.Title,
                 Content = memo.Content.Text,
                 CreatedAt = memo.CreatedAt,
@@ -29,10 +29,9 @@ namespace Project.Infrastructure.SQLiteNet {
             };
         }
 
-        public static Memo ToDomain(this MemoRecord record) 
-            {
+        public static Memo ToDomain(this MemoRecord record) {
             return new Memo(
-                record.Id,
+                new MemoId(record.Id),
                 record.Title,
                 new Content(record.Content),
                 record.CreatedAt,

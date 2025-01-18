@@ -9,9 +9,15 @@ namespace Project.Application.UseCase {
     /// <summary>
     /// タグ操作に関するUseCase．
     /// </summary>
+    /// <remarks>
+    /// - タグの追加
+    /// - 既存タグの適用
+    /// - タグの削除
+    /// - タグの検索
+    /// </remarks>
     public sealed class TagUseCase {
 
-        private readonly IMemoRepository _memoRepository;
+        //private readonly IMemoRepository _memoRepository;
         private readonly ITagRepository _tagRepository;
 
 
@@ -21,29 +27,49 @@ namespace Project.Application.UseCase {
         /// <summary>
         /// コンストラクタ．
         /// </summary>
-        public TagUseCase(IMemoRepository memoRepository, ITagRepository tagRepository) {
-            _memoRepository = memoRepository ?? throw new ArgumentNullException(nameof(memoRepository));
+        public TagUseCase(ITagRepository tagRepository) {
             _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
+        }
+        //public TagUseCase(IMemoRepository memoRepository, ITagRepository tagRepository) {
+        //    _memoRepository = memoRepository ?? throw new ArgumentNullException(nameof(memoRepository));
+        //    _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
+        //}
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public async UniTask<bool> CanAddTageAsync(string name) {
+
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            // 既に存在しているかの確認
+            var existingTag = await _tagRepository.FindByNameAsync(name);
+            return existingTag == null;
         }
 
         /// <summary>
-        /// タグを削除する．
+        /// 新規タグを作成する．
         /// </summary>
-        public async UniTask DeleteTagAsync(TagId tagId) {
-            if (tagId == null) throw new ArgumentNullException(nameof(tagId));
+        public async UniTask CreateTagAsync(string name) {
+            var tag = await _tagRepository.FindByNameAsync(name);
+            if (tag == null)
+                throw new InvalidOperationException("A tag with the same name already exists.");
 
-            // 1. タグを削除
-            await _tagRepository.DeleteAsync(tagId);
+            // 追加処理
+            var newTag = new Tag(name);
+            await _tagRepository.AddAsync(newTag);
+        }
 
-            // 2. タグを参照しているメモを取得
-            var memos = await _memoRepository.GetAllAsync();
-            foreach (var memo in memos) {
-                // 3. メモから該当タグを削除
-                if (memo.Tags.Contains(tagId)) {
-                    memo.RemoveTag(tagId);
-                    await _memoRepository.SaveAsync(memo);
-                }
-            }
+        /// <summary>
+        /// 既存タグを削除する．
+        /// </summary>
+        public async UniTask DeleteTagAsync(TagId id) {
+            var tag = await _tagRepository.FindByIdAsync(id);
+            if (tag == null)
+                throw new InvalidOperationException("Tag not found.");
+
+            await _tagRepository.RemoveAsync(id);
         }
     }
 }

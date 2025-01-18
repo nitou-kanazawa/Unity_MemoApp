@@ -46,6 +46,5 @@ namespace Project.Domain.Memos.Model {
         protected override bool EqualsCore(Content other) {
             return this.Text == other.Text;
         }
-        
     }
 }
