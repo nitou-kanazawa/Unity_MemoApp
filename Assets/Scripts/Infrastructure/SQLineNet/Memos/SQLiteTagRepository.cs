@@ -6,6 +6,7 @@ using Project.Domain.Memos.Model;
 using Project.Domain.Memos.Repository;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 namespace Project.Infrastructure.SQLiteNet.Memos {
 
@@ -13,7 +14,7 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
 
         private readonly ISQLiteConnection _connection;
 
-        private readonly static string FileName = "momos.db";
+        private readonly static string FileName = "memos.db";
         private readonly static string FilePath = Path.Combine(UnityEngine.Application.persistentDataPath, FileName);
 
 
@@ -40,35 +41,41 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
         // Public Method (Interface)
 
         /// <summary>
-        /// 指定したタグを保存する．
+        /// 指定したタグを追加する．
         /// </summary>
         UniTask ITagRepository.AddAsync(Tag tag) {
-            var record = new TagRecord {
-                Id = tag.Id.Value,
-                Name = tag.Name
-            };
 
-            // Apply to database
-            if (_connection.Find<TagRecord>(record.Id) != null) {
-                _connection.Update(record);
-            } else {
-                _connection.Insert(record);
+            if (tag == null)
+                throw new ArgumentNullException(nameof(tag));
+            // Name の重複を確認
+            if (Find(tag.Name) != null) {
+                throw new InvalidOperationException($"Tag with name '{tag.Name}' already exists.");
             }
+            // Id の重複を確認
+            if (Find(tag.Id) != null) {
+                throw new InvalidOperationException($"Tag with ID '{tag.Id.Value}' already exists.");
+            }
+
+            // データベースへの適用
+            var record = TagMapper.ToRecord(tag);
+            _connection.Insert(record); // 新規データを挿入
 
             return UniTask.CompletedTask;
         }
 
+        /// <summary>
+        /// <see cref="TagId">タグID</see>で検索する．
+        /// </summary>
         UniTask<Tag> ITagRepository.FindByIdAsync(TagId id) {
-            var record = _connection.Find<TagRecord>(id.Value);
-            var tag = record != null ? new Tag(new TagId(record.Id), record.Name) : null;
-
+            var tag = Find(id);
             return UniTask.FromResult(tag);
         }
 
+        /// <summary>
+        /// タグ名で検索する．
+        /// </summary>
         UniTask<Tag> ITagRepository.FindByNameAsync(string name) {
-            var record = _connection.Table<TagRecord>().FirstOrDefault(r => r.Name == name);
-            var tag = record != null ? new Tag(new TagId(record.Id), record.Name) : null;
-
+            var tag = Find(name);
             return UniTask.FromResult(tag);
         }
 
@@ -77,7 +84,7 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
         /// </summary>
         UniTask<IEnumerable<Tag>> ITagRepository.GetAllAsync() {
             var records = _connection.Table<TagRecord>().ToList();
-            var tags = records.Select(r => new Tag(new TagId(r.Id), r.Name));
+            var tags = records.Select(record => TagMapper.ToDomain(record));
             return UniTask.FromResult(tags);
         }
 
@@ -85,9 +92,29 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
         /// 指定したIDのメモを削除する．
         /// </summary>
         UniTask ITagRepository.RemoveAsync(TagId id) {
-            _connection.Delete<TagRecord>(id);
+            _connection.Delete<TagRecord>(id.Value);
 
             return UniTask.CompletedTask;
+        }
+
+
+
+        /// ----------------------------------------------------------------------------
+        // Private Method
+
+        private Tag Find(TagId id) {
+            var record = _connection
+                .Find<TagRecord>(id.Value);
+
+            return record != null ? TagMapper.ToDomain(record) : null;
+        }
+
+        private Tag Find(string name) {
+            var record = _connection
+                .Table<TagRecord>()
+                .FirstOrDefault(r => r.Name == name);
+
+            return record != null ? TagMapper.ToDomain(record) : null;
         }
     }
 }

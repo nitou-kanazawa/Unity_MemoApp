@@ -15,6 +15,7 @@ namespace Project.Develop.View.Memos {
 
         async void Start() {
 
+
             _source = Enumerable.Range(0, 30)
                 .Select(i => new ViewData($"Memo_{i}"))
                 .ToList();

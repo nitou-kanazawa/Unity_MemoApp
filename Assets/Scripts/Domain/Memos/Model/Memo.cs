@@ -10,7 +10,7 @@ namespace Project.Domain.Memos.Model {
     public class Memo : EntityBase<MemoId> {
 
         // 実装
-        private readonly List<TagId> _tags = new();
+        private readonly HashSet<TagId> _tags = new();
 
         /// <summary>
         /// タイトル．
@@ -25,7 +25,7 @@ namespace Project.Domain.Memos.Model {
         /// <summary>
         /// 付与されたタグ一覧．
         /// </summary>
-        public IReadOnlyList<TagId> Tags => _tags;
+        public IReadOnlyCollection<TagId> Tags => _tags;
 
         /// <summary>
         /// 作成日時．
@@ -64,7 +64,10 @@ namespace Project.Domain.Memos.Model {
         /// タイトルを更新する．
         /// </summary>
         public void UpdateTitle(string title) {
-            Title = title ?? throw new ArgumentNullException(nameof(title));
+            if (string.IsNullOrWhiteSpace(title))
+                throw new ArgumentNullException(nameof(title));
+
+            Title = title;
             UpdatedAt = DateTime.UtcNow;
         }
 
@@ -79,24 +82,28 @@ namespace Project.Domain.Memos.Model {
         /// <summary>
         /// タグを追加する．
         /// </summary>
-        public void AddTag(TagId tag) {
-            if (tag == null) throw new ArgumentNullException(nameof(tag));
-            if (_tags.Contains(tag)) return;
+        public void AddTag(TagId tagId) {
+            if (tagId == null) 
+                throw new ArgumentNullException(nameof(tagId));
+            if (_tags.Contains(tagId))
+                throw new InvalidOperationException($"Tag with ID '{tagId.Value}' is already associated with this memo.");
 
             // 追加
-            _tags.Add(tag);
+            _tags.Add(tagId);
             UpdatedAt = DateTime.UtcNow;
         }
 
         /// <summary>
         /// タグを削除する．
         /// </summary>
-        public void RemoveTag(TagId tag) {
-            if (tag == null) throw new ArgumentNullException(nameof(tag));
-            if (!_tags.Contains(tag)) return;
+        public void RemoveTag(TagId tagId) {
+            if (tagId == null) 
+                throw new ArgumentNullException(nameof(tagId));
+            if (!_tags.Contains(tagId))
+                throw new InvalidOperationException($"Tag with ID '{tagId.Value}' is not associated with this memo.");
 
             // 削除
-            _tags.Remove(tag);
+            _tags.Remove(tagId);
             UpdatedAt = DateTime.UtcNow;
         }
 

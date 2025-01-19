@@ -10,6 +10,7 @@ namespace Project.Infrastructure.SQLiteNet.Memos {
     internal class TagRecord {
         [PrimaryKey]
         public Guid Id { get; set; }
+        [Unique]
         public string Name { get; set; }
     }
 
