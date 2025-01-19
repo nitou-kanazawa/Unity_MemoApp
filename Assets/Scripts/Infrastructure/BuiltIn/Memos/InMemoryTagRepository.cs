@@ -12,13 +12,21 @@ namespace Project.Infrastructure.BuiltIn.Memos {
 
         private readonly ConcurrentDictionary<TagId, Tag> _tags = new();
 
+
+        /// ----------------------------------------------------------------------------
+        // Public Method
+
         public InMemoryTagRepository() {
 
         }
         
         public void Dispose() {
         }
-        
+
+
+        /// ----------------------------------------------------------------------------
+        // Public Method (Interface)
+
         UniTask ITagRepository.AddAsync(Tag tag) {
             if (_tags.Values.Any(t => t.Name.Equals(tag.Name, StringComparison.OrdinalIgnoreCase)))
                 throw new InvalidOperationException("A tag with the same name already exists.");

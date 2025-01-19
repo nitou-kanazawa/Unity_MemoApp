@@ -41,7 +41,8 @@ namespace Tests.Application {
 
 
         [UnityTest]
-        public IEnumerator CreateTagAsync_ValidName_AddsTag() {            
+        public IEnumerator CreateTagAsync_ValidName_AddsTag() => UniTask.ToCoroutine(async () => {
+            
             var name = "NewTag";
 
             // モックの設定: name に一致するタグは存在しない（null を返す）
@@ -50,12 +51,12 @@ namespace Tests.Application {
                 .Returns(UniTask.FromResult<Tag>(null));
 
             // テスト対象メソッドの呼び出し
-            yield return _useCase.CreateTagAsync(name).ToCoroutine();
+            await _useCase.CreateTagAsync(name);
 
             // モックの AddAsync メソッドが正しく呼び出されたことを検証
             _mockRepository.Verify(
                 repo => repo.AddAsync(It.Is<Tag>(t => t.Name == name)),
                 Times.Once);
-        }
+        });
     }
 }

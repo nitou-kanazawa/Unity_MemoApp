@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Project.Domain.Memos.Model;
@@ -17,7 +18,6 @@ namespace Project.Application.UseCase {
     /// </remarks>
     public sealed class TagUseCase {
 
-        //private readonly IMemoRepository _memoRepository;
         private readonly ITagRepository _tagRepository;
 
 
@@ -30,15 +30,11 @@ namespace Project.Application.UseCase {
         public TagUseCase(ITagRepository tagRepository) {
             _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
         }
-        //public TagUseCase(IMemoRepository memoRepository, ITagRepository tagRepository) {
-        //    _memoRepository = memoRepository ?? throw new ArgumentNullException(nameof(memoRepository));
-        //    _tagRepository = tagRepository ?? throw new ArgumentNullException(nameof(tagRepository));
-        //}
 
         /// <summary>
-        /// 
+        /// タグを追加できるか確認する．
         /// </summary>
-        public async UniTask<bool> CanAddTageAsync(string name) {
+        public async UniTask<bool> CanAddTagAsync(string name) {
 
             if (string.IsNullOrWhiteSpace(name))
                 return false;
@@ -71,5 +67,20 @@ namespace Project.Application.UseCase {
 
             await _tagRepository.RemoveAsync(id);
         }
+
+        /// <summary>
+        /// 部分一致でタグを検索する．
+        /// </summary>
+        /// <param name="keyword">検索キーワード</param>
+        /// <returns>一致するタグのリスト</returns>
+        public async UniTask<IEnumerable<Tag>> SearchTagsAsync(string keyword) {
+
+            if (string.IsNullOrWhiteSpace(keyword))
+                return Enumerable.Empty<Tag>();
+
+            var allTags = await _tagRepository.GetAllAsync();
+            return allTags.Where(tag => tag.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase));
+        }
+
     }
 }

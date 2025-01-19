@@ -8,6 +8,10 @@ namespace Project.Domain.Memos.Model {
     /// </summary>
     public sealed class TagId : IdentifierBase<TagId> {
 
+
+        /// ----------------------------------------------------------------------------
+        // Public Method
+
         /// <summary>
         /// コンストラクタ．
         /// </summary>
